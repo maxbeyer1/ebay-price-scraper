@@ -3,23 +3,27 @@ from bs4 import BeautifulSoup
 import re
 import numpy as np
 from dateutil.parser import parse as parse_date
+import lxml
+import cchardet
 from datetime import datetime
 
 # Get html from url
 def get_html(url):
     response = requests.get(url)
-    return BeautifulSoup(response.text, 'html.parser')
+    return BeautifulSoup(response.text, 'lxml')
+
 
 # Get all items from page
 def get_sold_items(soup):
     return soup.find_all('li', {'class': 's-item'})
+
 
 # Extract price and date from items
 def get_item_data(item):
     # Ignore sponsored items
     if item.find('span', string='Sponsored'):
         return None
-    
+
     # state = item.find('span', {'class': 'SECONDARY_INFO'}).text
 
     price = item.find('span', {'class': 's-item__price'}).text
@@ -27,22 +31,25 @@ def get_item_data(item):
     # Some items display a range of prices, ignore these
     if ' to ' in price:
         return None
-    
+
     date = item.find('span', {'class': 'POSITIVE'}).text
     # Extract date and convert to datetime object
     date = parse_date(date.replace('Sold ', ''))
 
     return {'price': float(re.sub(r'[\$,]', '', price)), 'date': date}
-    
+
+
 # Calculate average price of items
 def calculate_average_price(items):
     prices = [item['price'] for item in items]
     return sum(prices) / len(prices) if prices else 0
 
+
 # Calculate max and min price of items
 def calculate_max_min_price(items):
     prices = [item['price'] for item in items]
     return max(prices), min(prices) if prices else 0
+
 
 # remove outliers using IQR technique
 def remove_outliers(items, field, multiplier):
@@ -53,11 +60,12 @@ def remove_outliers(items, field, multiplier):
     upper_bound = quartile_3 + (iqr * multiplier)
 
     # print outliers
-    print ("lower bound: ", lower_bound)
-    print ("upper bound: ", upper_bound)
+    print("lower bound: ", lower_bound)
+    print("upper bound: ", upper_bound)
     print([item[field] for item in items if item[field] < lower_bound or item[field] > upper_bound])
-    
+
     return [item for item in items if lower_bound <= item[field] <= upper_bound]
+
 
 # def get_date_range(items):
 #     dates = [item['date'] for item in items]
@@ -68,6 +76,7 @@ def remove_outliers(items, field, multiplier):
 def get_date_range(items):
     dates = [item['date'] for item in items]
     return dates[-1], dates[0]  # -1 gets the last item, 0 gets the first item
+
 
 # Scrape data from ebay
 def get_ebay_data(keyword, num_pages, condition='Used', sacat='0'):
@@ -84,9 +93,9 @@ def get_ebay_data(keyword, num_pages, condition='Used', sacat='0'):
         case 'Open box':
             condition = 1500
         case _:
-            condition = 0   
+            condition = 0
 
-    # Loop through pages
+            # Loop through pages
     for page in range(1, num_pages + 1):
         # Construct url
         url = f'https://www.ebay.com/sch/i.html?_nkw="{keyword}"&_sacat={sacat}&_sop=13&LH_Complete=1&LH_Sold=1&LH_ItemCondition={condition}&_ipg=240&_pgn={page}'
@@ -103,7 +112,7 @@ def get_ebay_data(keyword, num_pages, condition='Used', sacat='0'):
         next_button = soup.find('a', {'class': 'pagination__next'})
         if next_button is None:
             break
-        
+
     print(len(items))
     items = remove_outliers(items, 'price', 1.5)
 
@@ -120,4 +129,4 @@ def get_ebay_data(keyword, num_pages, condition='Used', sacat='0'):
     }
 
 # Replace 'keyboard' with your keyword
-# print(get_ebay_data('iphone 8', 1))
+print(get_ebay_data('iphone 8', 4))

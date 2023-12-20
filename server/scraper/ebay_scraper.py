@@ -3,14 +3,17 @@ from bs4 import BeautifulSoup
 import re
 import numpy as np
 from dateutil.parser import parse as parse_date
+import asyncio
+import aiohttp
 import lxml
 import cchardet
 from datetime import datetime
 
+
 # Get html from url
-def get_html(url):
-    response = requests.get(url)
-    return BeautifulSoup(response.text, 'lxml')
+async def get_html(session, url):
+    async with session.get(url) as response:
+        return BeautifulSoup(await response.text(), 'lxml')
 
 
 # Get all items from page
@@ -79,28 +82,21 @@ def get_date_range(items):
 
 
 # Scrape data from ebay
-def get_ebay_data(keyword, num_pages, condition='Used', sacat='0'):
+async def get_ebay_data(session, keyword, num_pages, condition='Used', sacat='0'):
     items = []
 
-    # Convert condition to numerical value for url
-    match condition:
-        case 'New':
-            condition = 1000
-        case 'Used':
-            condition = 3000
-        case 'For parts or not working':
-            condition = 7000
-        case 'Open box':
-            condition = 1500
-        case _:
-            condition = 0
+    condition_map = {
+        'New': 1000,
+        'Used': 3000,
+        'For parts or not working': 7000,
+        'Open box': 1500
+    }
 
-            # Loop through pages
-    for page in range(1, num_pages + 1):
-        # Construct url
+    condition_value = condition_map.get(condition, 0)
+
+    async def fetch_page(page):
         url = f'https://www.ebay.com/sch/i.html?_nkw="{keyword}"&_sacat={sacat}&_sop=13&LH_Complete=1&LH_Sold=1&LH_ItemCondition={condition}&_ipg=240&_pgn={page}'
-        print(url)
-        soup = get_html(url)
+        soup = await get_html(session, url)
 
         sold_items = get_sold_items(soup)
         for item in sold_items:
@@ -108,15 +104,13 @@ def get_ebay_data(keyword, num_pages, condition='Used', sacat='0'):
             if data is not None:
                 items.append(data)
 
-        # Check if there are still pages left
-        next_button = soup.find('a', {'class': 'pagination__next'})
-        if next_button is None:
-            break
+        print(f'Page {page} fetched and data extracted')
 
-    print(len(items))
+    tasks = [fetch_page(page) for page in range(1, num_pages + 1)]
+    await asyncio.gather(*tasks)
+
     items = remove_outliers(items, 'price', 1.5)
-
-    # items = remove_outliers(items, 'date', 3.0)
+    # items = remove_outliers(items, 'date', 1.5)
 
     date_range = get_date_range(items)
 
@@ -128,5 +122,10 @@ def get_ebay_data(keyword, num_pages, condition='Used', sacat='0'):
         'date_range': date_range[0].strftime("%m/%d/%Y") + " to " + date_range[1].strftime("%m/%d/%Y")
     }
 
-# Replace 'keyboard' with your keyword
-print(get_ebay_data('iphone 8', 4))
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        data = await get_ebay_data(session, 'iphone 8', 4)
+        print(data)
+
+# asyncio.run(main())

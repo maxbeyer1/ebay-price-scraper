@@ -1,6 +1,6 @@
 import os
 import sys
-
+import aiohttp
 from fastapi import FastAPI
 from typing import Optional
 
@@ -16,5 +16,6 @@ app = FastAPI()
 
 
 @app.get("/api/")
-def read_data(keyword: str, num_pages: Optional[int] = 1, condition: Optional[str] = None, sacat: Optional[int] = 0):
-    return get_ebay_data(keyword, num_pages, condition, sacat)
+async def read_data(keyword: str, num_pages: Optional[int] = 1, condition: Optional[str] = None, sacat: Optional[int] = 0):
+    async with aiohttp.ClientSession() as session:
+        return await get_ebay_data(session, keyword, num_pages, condition, sacat)

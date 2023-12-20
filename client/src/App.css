@@ -1,0 +1,30 @@
+.App {
+  text-align: center;
+}
+
+.ant-select-selector {
+  border: 0px !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ant-select-selector:before {
+  content: "";
+  border-left: #e6e6e6 1px solid;
+  position: absolute;
+  top: 12.5px;
+  bottom: 12.5px;
+  left: -1.5px;
+  z-index: 1 !important;
+}
+
+.ant-select-selection-item {
+  font-weight: 500 !important;
+}
+
+.ant-btn {
+  height: auto;
+}
+
+.ant-select {
+  height: auto;
+}

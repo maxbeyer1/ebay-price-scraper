@@ -2,6 +2,7 @@ import os
 import sys
 import aiohttp
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 
 PROJECT_ROOT = os.path.abspath(os.path.join(
@@ -13,6 +14,15 @@ sys.path.append(PROJECT_ROOT)
 from scraper.ebay_scraper import get_ebay_data
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+)
 
 
 @app.get("/api/")

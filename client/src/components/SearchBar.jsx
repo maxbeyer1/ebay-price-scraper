@@ -1,21 +1,36 @@
 import React, { useState } from 'react';
 import { Input, Select, Button } from 'antd';
-
 import { SearchOutlined } from '@ant-design/icons';
-
-import './App.css';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const { Option } = Select;
 
 const SearchBar = () => {
+  const navigate = useNavigate();
+
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
   const [condition, setCondition] = useState('');
   // const [dateRange, setDateRange] = useState('');
 
-  const handleSearch = () => {
-    // Implement your search logic here using the state variables
-    console.log({ keyword, category, condition });
+  const handleSearch = async () => {
+    try {
+      const response = axios.get('http://localhost:8000/api', {
+        params: {
+          keyword: keyword,
+          category: category,
+          condition: condition,
+          // dateRange: dateRange,
+        }
+      });
+
+      console.log(response);
+
+      navigate('/results');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

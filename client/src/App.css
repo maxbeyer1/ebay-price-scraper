@@ -28,3 +28,7 @@
 .ant-select {
   height: auto;
 }
+
+.ant-statistic-content {
+  font-weight: 600;
+}

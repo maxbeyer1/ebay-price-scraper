@@ -8,10 +8,16 @@ import { ConfigProvider } from 'antd';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ConfigProvider 
-    theme={{ 
+    theme={{
+      components: {
+        Menu: {
+          itemBg: '#F8F8F8',
+          lineType: 'none',
+        }
+      }, 
       token: {
         colorPrimary: '#2a90cb',
-        fontFamily: 'Roboto, sans-serif',
+        fontFamily: 'Apercu Pro, sans-serif',
       } 
     }}
   >

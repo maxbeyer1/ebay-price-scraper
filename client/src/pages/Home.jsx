@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Modal, Button } from 'antd';
 
 import SearchBar from '../components/SearchBar';
+import PageHeader from '../components/PageHeader';
 
 const Home = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -20,6 +21,7 @@ const Home = () => {
 
   return (
     <>
+      <PageHeader />
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 'calc(100vh - 60px)'}}>
         <SearchBar />
         <Button type="link" onClick={showModal} style={{ marginTop: '20px' }}>

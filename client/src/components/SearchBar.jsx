@@ -12,11 +12,14 @@ const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
   const [condition, setCondition] = useState('');
+  const [resultsLoading, setResultsLoading] = useState(false);
   // const [dateRange, setDateRange] = useState('');
 
   const handleSearch = async () => {
+    setResultsLoading(true);
+
     try {
-      const response = axios.get('http://localhost:8000/api', {
+      const response = await axios.get('http://localhost:8000/api', {
         params: {
           keyword: keyword,
           category: category,
@@ -27,10 +30,12 @@ const SearchBar = () => {
 
       console.log(response);
 
-      navigate('/results');
+      navigate('/results', { state: { keyword: keyword, data: response.data } });
     } catch (err) {
       console.log(err);
     }
+
+    setResultsLoading(false);
   };
 
   return (
@@ -81,7 +86,12 @@ const SearchBar = () => {
           <Option value="30_days">Last 30 days</Option>
           <Option value="90_days">Last 90 days</Option>
         </Select> */}
-        <Button type="primary" icon={ <SearchOutlined /> } onClick={handleSearch} shape="circle" 
+        <Button 
+          type="primary"
+          icon={ <SearchOutlined /> }
+          onClick={handleSearch} 
+          shape="circle"
+          loading={resultsLoading} 
           style={{ 
             borderRadius: '50%',
             maxHeight: '36px',

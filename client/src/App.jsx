@@ -9,8 +9,6 @@ import './App.css';
 const { Title } = Typography;
 
 const App = () => {
-  console.log(router)
-
   return (
     <div className="App" style={{ height: '100vh', backgroundColor: '#fcfcfc' }}>
       {/* TODO: Seperate into own component */}

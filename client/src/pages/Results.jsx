@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import HistoryTable from "../components/HistoryTable";
 import useLocalStorage from "../hooks/useLocalStorage";
+import StatCard from "../components/StatCard";
 
 const { Title, Text } = Typography;
 
@@ -59,9 +60,7 @@ const Results = () => {
         </Row>
         <Flex style={{ marginTop: '20px' }} gap="middle" align="start" justify="center">
           {/* TODO: make stat card component */}
-          <Card bordered={false} style={{ width: 200, boxShadow: '0px 2px 4px 0px #C8C8C840' }}>
-            <Statistic title="Average Price" value={averagePrice.toFixed(2)} prefix="$" />
-          </Card>
+          <StatCard title="Average Price" value={averagePrice.toFixed(2)} prefix="$" />
           <Card bordered={false} style={{ width: 300, boxShadow: '0px 2px 4px 0px #C8C8C840' }}>
             <Flex gap="large" justify="center">
               <Statistic title="Min Price" value={minPrice.toFixed(2)} prefix="$" style={{ marginLeft: '-10px' }} />
@@ -71,9 +70,7 @@ const Results = () => {
               <Statistic title="Max Price" value={maxPrice.toFixed(2)} prefix="$" />
             </Flex> 
           </Card>
-          <Card bordered={false} style={{ width: 200, boxShadow: '0px 2px 4px 0px #C8C8C840' }}>
-            <Statistic title="Total Listings" value={totalListings} />
-          </Card>
+          <StatCard title="Total Listings" value={totalListings} />
         </Flex>
         </>
       )}

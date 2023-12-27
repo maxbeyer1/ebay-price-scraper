@@ -30,11 +30,10 @@ eBay Price Analyzer is a full-stack web application that provides in-depth analy
 
 ### Development Setup
 
-1. Navigate to the server directory and activate the Python virtual environment
+1. Navigate to the server directory
 
    ```
    cd server
-   source .venv/bin/activate
    ```
 
 2. Install the required Python packages

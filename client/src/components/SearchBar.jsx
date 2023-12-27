@@ -63,7 +63,7 @@ const SearchBar = () => {
           backgroundColor: '#fff',
           textAlign: 'justify' }}>
         <Input
-          prefix={<SearchOutlined />}
+          prefix={<SearchOutlined style={{ stroke: 'black', strokeWidth: 20  }}/>}
           style={{ width: '40%', border: '0', left: '10px' }}
           placeholder="Enter keywords..."
           value={keyword}
@@ -101,6 +101,7 @@ const SearchBar = () => {
             background: '#1890FF',
             borderRadius: '12px',
             height: '38px',
+            fontWeight: '600',
           }}
         >
           Search

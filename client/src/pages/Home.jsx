@@ -22,8 +22,15 @@ const Home = () => {
   return (
     <>
       <PageHeader />
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 'calc(100vh - 60px)'}}>
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        height: 'calc(100vh - 60px)',
+      }}>
         <SearchBar />
+        {/* TODO: better instructions */}
         <Button type="link" onClick={showModal} style={{ marginTop: '20px' }}>
           How to use this tool?
         </Button>

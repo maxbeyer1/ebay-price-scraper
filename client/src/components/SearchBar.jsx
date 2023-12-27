@@ -39,14 +39,19 @@ const SearchBar = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: '100px 0', width: '100%' }}>
+    <div style={{
+      display: 'flex', 
+      justifyContent: 'center', 
+      padding: '100px 0 150px 0', 
+      width: '100%'
+    }}>
       <Input.Group compact 
         style={{ 
           display: 'flex', 
           borderRadius: '20px',
           border: '1px solid #e0e0e0', 
           overflow: 'hidden', 
-          boxShadow: '0 1px 2px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05)', 
+          boxShadow: '0px 4px 4px 0px rgba(193, 193, 193, 0.20)', 
           width: '60%', 
           height: '50px',
           fontWeight: '500',
@@ -61,7 +66,7 @@ const SearchBar = () => {
         <Select
           placeholder="Select category"
           onChange={setCategory}
-          suffixIcon={null}
+          // suffixIcon={null}
           style={{ width: '30%', textAlign: 'center', borderTop: '0' }}
         >
           <Option value="all">All Categories</Option>
@@ -70,7 +75,7 @@ const SearchBar = () => {
         <Select
           placeholder="Select condition"
           onChange={setCondition}
-          suffixIcon={null}
+          // suffixIcon={null}
           style={{ width: '30%', textAlign: 'center' }}
         >
           <Option value="new">New</Option>

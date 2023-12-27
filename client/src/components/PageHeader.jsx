@@ -24,7 +24,6 @@ const menuItems = [
 
 const PageHeader = () => {
   const location = useLocation();
-  console.log(location.pathname)
 
   return (
     <Header style={{ 
@@ -34,7 +33,10 @@ const PageHeader = () => {
       display: 'flex', 
       alignItems: 'center', 
       justifyContent: 'space-between',
-      padding: '0 40px'
+      padding: '0 40px',
+      position: 'sticky',
+      top: 0,
+      zIndex: 1,
     }}>
       <Title level={5} style={{ marginTop: '0.5em' }}>eBay Price Finder</Title>
       <Menu 

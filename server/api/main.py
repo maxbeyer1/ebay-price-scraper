@@ -16,7 +16,7 @@ from scraper.ebay_scraper import get_ebay_data
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",
+    "http://localhost",
 ]
 
 app.add_middleware(
@@ -26,7 +26,7 @@ app.add_middleware(
 
 
 @app.get("/api/")
-async def read_data(keyword: str, num_pages: Optional[int] = 1, condition: Optional[str] = None, sacat: Optional[int] = 0):
+async def read_data(keyword: str, num_pages: Optional[int] = 4, condition: Optional[str] = None, sacat: Optional[int] = 0):
     """
     Retrieves eBay data based on the provided keyword and optional parameters.
 

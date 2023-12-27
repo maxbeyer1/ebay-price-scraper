@@ -2,19 +2,34 @@
   text-align: center;
 }
 
+
+.ant-input {
+  font-weight: 600 !important;
+}
+
+.ant-input-prefix {
+  margin: 0 12px 0 -12px !important;
+}
+
 .ant-select-selector {
   border: 0px !important;
   -webkit-tap-highlight-color: transparent;
 }
 
+/* creates dividers between selectors */
 .ant-select-selector:before {
   content: "";
   border-left: #e6e6e6 1px solid;
   position: absolute;
-  top: 12.5px;
-  bottom: 12.5px;
+  top: 5px;
+  bottom: 5px;
   left: -1.5px;
   z-index: 1 !important;
+}
+
+.ant-select-arrow {
+  color: #000 !important;
+  padding-right: 8px;
 }
 
 .ant-select-selection-item {

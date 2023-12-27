@@ -57,14 +57,15 @@ const SearchBar = () => {
           border: '1px solid #e0e0e0', 
           overflow: 'hidden', 
           boxShadow: '0px 4px 4px 0px rgba(193, 193, 193, 0.20)', 
-          width: '60%', 
-          height: '50px',
-          fontWeight: '500',
+          width: '65%', 
+          padding: '12px 16px 12px 16px',
+          fontWeight: '600',
           backgroundColor: '#fff',
           textAlign: 'justify' }}>
         <Input
-          style={{ width: '40%', border: '0', left: '10px', fontWeight: '500' }}
-          placeholder="Enter your search..."
+          prefix={<SearchOutlined />}
+          style={{ width: '40%', border: '0', left: '10px' }}
+          placeholder="Enter keywords..."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
@@ -92,20 +93,18 @@ const SearchBar = () => {
           <Option value="30_days">Last 30 days</Option>
           <Option value="90_days">Last 90 days</Option>
         </Select> */}
-        <Button 
+        <Button
           type="primary"
-          icon={ <SearchOutlined /> }
-          onClick={handleSearch} 
-          shape="circle"
-          loading={resultsLoading} 
-          style={{ 
-            borderRadius: '50%',
-            maxHeight: '36px',
-            minWidth: '36px', 
-            maxWidth: '36px', 
-            top: '7px', 
-            right: '10px',
-            zIndex: '1' }} />
+          onClick={handleSearch}
+          loading={resultsLoading}
+          style={{
+            background: '#1890FF',
+            borderRadius: '12px',
+            height: '38px',
+          }}
+        >
+          Search
+        </Button>
       </Input.Group>
     </div>
   );

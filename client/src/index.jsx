@@ -10,14 +10,18 @@ root.render(
   <ConfigProvider 
     theme={{
       components: {
+        // customize nav bar menu styles
         Menu: {
           itemBg: '#F8F8F8',
           lineType: 'none',
         }
       }, 
       token: {
+        // main customizations
         colorPrimary: '#2a90cb',
         fontFamily: 'Apercu Pro, sans-serif',
+        // fix placeholder color on Select component
+        colorTextPlaceholder: 'rgba(0, 0, 0, 0.88)', 
       } 
     }}
   >

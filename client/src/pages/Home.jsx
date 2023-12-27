@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Modal, Button } from "antd";
+import { Modal, Button, Typography } from "antd";
 
 import SearchBar from "../components/SearchBar";
 import PageHeader from "../components/PageHeader";
+
+const { Title } = Typography;
 
 /**
  * Renders the Home page component.
@@ -36,9 +38,10 @@ const Home = () => {
           height: "calc(100vh - 60px)",
         }}
       >
+        <Title level={1}>Get key insights into eBay listings.</Title>
         <SearchBar />
         {/* TODO: better instructions */}
-        <Button type="link" onClick={showModal} style={{ marginTop: "20px" }}>
+        {/* <Button type="link" onClick={showModal} style={{ marginTop: "20px" }}>
           How to use this tool?
         </Button>
         <Modal
@@ -50,7 +53,7 @@ const Home = () => {
           <p>Type your keyword in the search bar.</p>
           <p>Select the desired category and condition.</p>
           <p>Click on the search button to see the results.</p>
-        </Modal>
+        </Modal> */}
       </div>
     </>
   );

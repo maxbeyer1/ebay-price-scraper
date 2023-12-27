@@ -1,6 +1,13 @@
 import React from "react";
 import { Card, Table } from "antd";
 
+/**
+ * Renders a table component to display historical data.
+ *
+ * @component
+ * @param {Object[]} data - The data to be displayed in the table.
+ * @returns {JSX.Element} The rendered HistoryTable component.
+ */
 const HistoryTable = ({ data }) => {
   // define columns for table
   const columns = [

@@ -6,6 +6,11 @@ import axios from 'axios';
 
 const { Option } = Select;
 
+/**
+ * SearchBar component.
+ *
+ * @returns {JSX.Element} The SearchBar component.
+ */
 const SearchBar = () => {
   const navigate = useNavigate();
 
@@ -66,21 +71,17 @@ const SearchBar = () => {
         <Select
           placeholder="Select category"
           onChange={setCategory}
-          // suffixIcon={null}
           style={{ width: '30%', textAlign: 'center', borderTop: '0' }}
         >
           <Option value="all">All Categories</Option>
-          {/* Populate with other categories */}
         </Select>
         <Select
           placeholder="Select condition"
           onChange={setCondition}
-          // suffixIcon={null}
           style={{ width: '30%', textAlign: 'center' }}
         >
           <Option value="new">New</Option>
           <Option value="used">Used</Option>
-          {/* Populate with other conditions */}
         </Select>
         {/* <Select
           placeholder="Date Range"

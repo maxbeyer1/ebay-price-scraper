@@ -22,6 +22,11 @@ const menuItems = [
   },
 ];
 
+/**
+ * Renders the page header component.
+ *
+ * @returns {JSX.Element} The rendered page header component.
+ */
 const PageHeader = () => {
   const location = useLocation();
 

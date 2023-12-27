@@ -1,3 +1,9 @@
+/**
+ * Creates a router using react-router-dom library.
+ *
+ * @module router
+ * @returns {Object} The router object.
+ */
 import { createBrowserRouter } from "react-router-dom";
 
 import Home from "./Home";

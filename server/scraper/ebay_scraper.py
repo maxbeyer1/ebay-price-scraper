@@ -10,79 +10,136 @@ import cchardet
 from datetime import datetime
 
 
-# Get html from url
 async def get_html(session, url):
+    """
+    Retrieves the HTML content from a given URL using an async HTTP session.
+
+    Args:
+        session (aiohttp.ClientSession): The async HTTP session.
+        url (str): The URL to fetch the HTML content from.
+
+    Returns:
+        BeautifulSoup: The parsed HTML content as a BeautifulSoup object.
+    """
     async with session.get(url) as response:
         return BeautifulSoup(await response.text(), 'lxml')
 
 
-# Get all items from page
 def get_sold_items(soup):
+    """
+    Extracts all sold items from the parsed HTML content.
+
+    Args:
+        soup (BeautifulSoup): The parsed HTML content as a BeautifulSoup object.
+
+    Returns:
+        list: A list of BeautifulSoup objects representing the sold items.
+    """
     return soup.find_all('li', {'class': 's-item'})
 
 
-# Extract price and date from items
 def get_item_data(item):
-    # Ignore sponsored items
+    """
+    Extracts the price and date from a single sold item.
+
+    Args:
+        item (BeautifulSoup): A BeautifulSoup object representing a sold item.
+
+    Returns:
+        dict: A dictionary containing the price and date of the item.
+    """
     if item.find('span', string='Sponsored'):
         return None
 
-    # state = item.find('span', {'class': 'SECONDARY_INFO'}).text
-
     price = item.find('span', {'class': 's-item__price'}).text
 
-    # Some items display a range of prices, ignore these
     if ' to ' in price:
         return None
 
     date = item.find('span', {'class': 'POSITIVE'}).text
-    # Extract date and convert to datetime object
     date = parse_date(date.replace('Sold ', ''))
 
     return {'price': float(re.sub(r'[\$,]', '', price)), 'date': date}
 
 
-# Calculate average price of items
 def calculate_average_price(items):
+    """
+    Calculates the average price of a list of sold items.
+
+    Args:
+        items (list): A list of sold items.
+
+    Returns:
+        float: The average price of the sold items.
+    """
     prices = [item['price'] for item in items]
     return sum(prices) / len(prices) if prices else 0
 
 
-# Calculate max and min price of items
 def calculate_max_min_price(items):
+    """
+    Calculates the maximum and minimum price of a list of sold items.
+
+    Args:
+        items (list): A list of sold items.
+
+    Returns:
+        tuple: A tuple containing the maximum and minimum price of the sold items.
+    """
     prices = [item['price'] for item in items]
     return max(prices), min(prices) if prices else 0
 
 
-# remove outliers using IQR technique
 def remove_outliers(items, field, multiplier):
+    """
+    Removes outliers from a list of sold items based on a given field and multiplier.
+
+    Args:
+        items (list): A list of sold items.
+        field (str): The field to consider for outlier removal.
+        multiplier (float): The multiplier used to determine the outlier range.
+
+    Returns:
+        list: A list of sold items with outliers removed.
+    """
     values = [item[field] for item in items]
     quartile_1, quartile_3 = np.percentile(values, [25, 75])
     iqr = quartile_3 - quartile_1
     lower_bound = abs(quartile_1 - (iqr * multiplier))
     upper_bound = quartile_3 + (iqr * multiplier)
 
-    # print outliers
-    print("lower bound: ", lower_bound)
-    print("upper bound: ", upper_bound)
-    print([item[field] for item in items if item[field] < lower_bound or item[field] > upper_bound])
-
     return [item for item in items if lower_bound <= item[field] <= upper_bound]
 
 
-# def get_date_range(items):
-#     dates = [item['date'] for item in items]
-#     return datetime.fromtimestamp(min(dates)), datetime.fromtimestamp(max(dates))
-
-# Get range of dates from items
-# items come pre-sorted because of url used (sop = 13)
 def get_date_range(items):
+    """
+    Retrieves the range of dates from a list of sold items.
+
+    Args:
+        items (list): A list of sold items.
+
+    Returns:
+        tuple: A tuple containing the earliest and latest date in the sold items.
+    """
     dates = [item['date'] for item in items]
-    return dates[-1], dates[0]  # -1 gets the last item, 0 gets the first item
+    return dates[-1], dates[0]
 
 
-# Scrape data from ebay
 async def get_ebay_data(session, keyword, num_pages, condition='Used', sacat='0'):
+    """
+    Scrapes data from eBay for a given keyword and number of pages.
+
+    Args:
+        session (aiohttp.ClientSession): The async HTTP session.
+        keyword (str): The keyword to search for on eBay.
+        num_pages (int): The number of pages to scrape.
+        condition (str, optional): The condition of the items to search for. Defaults to 'Used'.
+        sacat (str, optional): The eBay category ID. Defaults to '0'.
+
+    Returns:
+        dict: A dictionary containing the scraped data, including average price, max price, min price,
+              total number of items, and date range.
+    """
     items = []
 
     condition_map = {
@@ -110,7 +167,6 @@ async def get_ebay_data(session, keyword, num_pages, condition='Used', sacat='0'
     await asyncio.gather(*tasks)
 
     items = remove_outliers(items, 'price', 1.5)
-    # items = remove_outliers(items, 'date', 1.5)
 
     date_range = get_date_range(items)
 
@@ -127,5 +183,3 @@ async def main():
     async with aiohttp.ClientSession() as session:
         data = await get_ebay_data(session, 'iphone 8', 4)
         print(data)
-
-# asyncio.run(main())

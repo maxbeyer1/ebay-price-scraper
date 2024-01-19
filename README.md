@@ -1,6 +1,6 @@
 # eBay Price Analyzer
 
-eBay Price Analyzer is a full-stack web application that provides in-depth analytics on the historical performance of eBay listings based on a specified keyword, condition, and category. This project showcases my capabilities in full-stack development, web scraping, and asynchronous programming.
+eBay Price Analyzer is a full-stack web application that provides in-depth analytics on the historical performance of eBay listings based on a specified keyword, condition, and category.
 
 ## Key Highlights
 
